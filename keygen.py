@@ -1,11 +1,11 @@
 import sys, random
 
-valid_years = ["95", "96", "97", "98", "99", "00", "01", "02", "03"]
+valid_years = ["95", "96", "97", "98", "99", "00", "01", "02", "03"] # Valid years for OEM key
 
-def sum_int(inp):
+def sum_int(inp): # Summing all digits in int
     return sum(int(x) for x in str(inp))
 
-def generate_oem():
+def generate_oem(): # Generating OEM key
     rand_day = f'{random.randrange(367):03}'
     rand_year = random.choice(valid_years)
 
@@ -20,7 +20,7 @@ def generate_oem():
 
     return f'{key_first}-OEM-{key_second}-{key_third}'
 
-def generate_retail():
+def generate_retail(): # Generating retail key
     key_first: str
     key_second: str
 
@@ -36,7 +36,7 @@ def generate_retail():
 
     return f'{key_first}-{key_second}'
 
-def generate_office():
+def generate_office(): # Generating Office 97 key
     key_first: str
     key_second: str
 
@@ -52,19 +52,19 @@ def generate_office():
 
     return f'{key_first}-{key_second}'
     
-def validate_oem(key):
+def validate_oem(key): # Validating OEM key
     key_segs = key.split('-')
     return len(key_segs) == 4 and check_oem_first(key_segs[0]) and check_oem_second(key_segs[2]) and check_oem_third(key_segs[3])
     
-def validate_retail(key):
+def validate_retail(key): # Validating retail key
     key_segs = key.split('-')
     return len(key_segs) == 2 and check_retail_first(key_segs[0]) and check_oem_second(key_segs[1])
 
-def validate_office(key):
+def validate_office(key): # Validating Office 97 key
     key_segs = key.split('-')
     return len(key_segs) == 2 and check_office_first(key_segs[0]) and check_oem_second(key_segs[1])
 
-def check_oem_first(key):
+def check_oem_first(key): # Checking first slot of OEM numbers
     if not key.isdigit():
         return False
 
@@ -82,7 +82,7 @@ def check_oem_first(key):
 
     return True
 
-def check_oem_second(key):
+def check_oem_second(key): # Checking second slot of OEM numbers
     if not key.isdigit():
         return False
 
@@ -100,7 +100,7 @@ def check_oem_second(key):
     
     return True
 
-def check_oem_third(key):
+def check_oem_third(key): # Checking third slot of OEM numbers
     if not key.isdigit():
         return False
     
@@ -109,7 +109,7 @@ def check_oem_third(key):
     
     return True
 
-def check_retail_first(key):
+def check_retail_first(key): # Checking first slot of retail numbers
     if not key.isdigit():
         return False
     
@@ -123,7 +123,7 @@ def check_retail_first(key):
     
     return True
 
-def check_office_first(key):
+def check_office_first(key): # Checking the first slot of Office 97 numbers
     if not key.isdigit():
         return False
     
@@ -156,9 +156,9 @@ def check_office_first(key):
 valid_key: bool
 key_type: str
 
-try:
+try: # If there's an argument
     arg = sys.argv[1]
-except IndexError:
+except IndexError: # Otherwise
     arg = False
 
 if not arg:
@@ -169,17 +169,17 @@ if not arg:
 
 key_segs = arg.split('-')
 
-if 'OEM' in arg:
+if 'OEM' in arg: # Assume argument is an OEM key
     valid_key = validate_oem(arg)
     key_type = 'OEM'
-elif len(key_segs[0]) == 4:
+elif len(key_segs[0]) == 4: # Office 97 key
     valid_key = validate_office(arg)
     key_type = 'Office 97'
-else:
+else: # Retail key
     valid_key = validate_retail(arg)
     key_type = 'retail'
 
-if valid_key:
+if valid_key: # If the key was valid
     print(f'Valid {key_type} key')
-else:
+else: # Otherwise
     print('Invalid key')
