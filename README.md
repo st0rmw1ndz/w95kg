@@ -33,6 +33,6 @@ OEM key is valid
 
 ## Building
 
-Be sure [PyInstaller]() is installed. Then, run `build.py` in your terminal. If all goes well, it should be built.
+Be sure [PyInstaller](https://pyinstaller.org/en/stable/installation.html) is installed. Then, run `build.py` in your terminal. If all goes well, it should be built.
 
 (Tested on Windows 10)
