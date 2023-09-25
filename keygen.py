@@ -1,185 +1,51 @@
-import sys, random
+from argparse import ArgumentParser
+from keys import OEMKey, RetailKey, OfficeKey
 
-valid_years = ["95", "96", "97", "98", "99", "00", "01", "02", "03"] # Valid years for OEM key
 
-def sum_int(inp): # Summing all digits in int
-    return sum(int(x) for x in str(inp))
-
-def generate_oem(): # Generating OEM key
-    rand_day = f'{random.randrange(367):03}'
-    rand_year = random.choice(valid_years)
-
-    key_first = rand_day + rand_year
-    key_second: str
-    key_third = f'{random.randrange(100000):05}'
-
-    while True:
-        key_second = f'{random.randrange(1000000):07}'
-        if check_oem_second(key_second):
-            break
-
-    return f'{key_first}-OEM-{key_second}-{key_third}'
-
-def generate_retail(): # Generating retail key
-    key_first: str
-    key_second: str
-
-    while True:
-        key_first = f'{random.randrange(1000):03}'
-        if check_retail_first(key_first) == True:
-            break
-
-    while True:
-        key_second = f'{random.randrange(1000000):07}'
-        if check_oem_second(key_second) == True:
-            break
-
-    return f'{key_first}-{key_second}'
-
-def generate_office(): # Generating Office 97 key
-    key_first: str
-    key_second: str
-
-    while True:
-        key_first = f'{random.randrange(10000):04}'
-        if check_office_first(key_first) == True:
-            break
-
-    while True:
-        key_second = f'{random.randrange(1000000):07}'
-        if check_oem_second(key_second) == True:
-            break
-
-    return f'{key_first}-{key_second}'
-    
-def validate_oem(key): # Validating OEM key
-    key_segs = key.split('-')
-    return len(key_segs) == 4 and check_oem_first(key_segs[0]) and check_oem_second(key_segs[2]) and check_oem_third(key_segs[3])
-    
-def validate_retail(key): # Validating retail key
-    key_segs = key.split('-')
-    return len(key_segs) == 2 and check_retail_first(key_segs[0]) and check_oem_second(key_segs[1])
-
-def validate_office(key): # Validating Office 97 key
-    key_segs = key.split('-')
-    return len(key_segs) == 2 and check_office_first(key_segs[0]) and check_oem_second(key_segs[1])
-
-def check_oem_first(key): # Checking first slot of OEM numbers
-    if not key.isdigit():
-        return False
-
-    if len(key) != 5:
-        return False
-    
-    key_day = key[:3]
-    key_year = key[-3:]
-
-    if key_day < 0 or key_day > 366:
-        return False
-    
-    if key_year in valid_years:
-        return False
-
-    return True
-
-def check_oem_second(key): # Checking second slot of OEM numbers
-    if not key.isdigit():
-        return False
-
-    if len(key) != 7:
-        return False
-    
-    key_int = int(key)
-    key_last = key_int % 10
-
-    if key_last == 0 or key_last > 7:
-        return False
-
-    if sum_int(key_int) % 7 != 0:
-        return False
-    
-    return True
-
-def check_oem_third(key): # Checking third slot of OEM numbers
-    if not key.isdigit():
-        return False
-    
-    if len(key) != 5:
-        return False
-    
-    return True
-
-def check_retail_first(key): # Checking first slot of retail numbers
-    if not key.isdigit():
-        return False
-    
-    if len(key) != 3:
-        return False
-
-    rejected_first = ["333", "444", "555", "666", "777", "888", "999"]
-
-    if key in rejected_first:
-        return False
-    
-    return True
-
-def check_office_first(key): # Checking the first slot of Office 97 numbers
-    if not key.isdigit():
-        return False
-    
-    if len(key) != 4:
-        return False
-    
-    key_int = int(key)
-
-    if key_int < 1 or key_int > 9991:
-        return False
-    
-    digit_third = int(key[2])
-    digit_fourth = int(key[3])
-
-    pos_digit_0 = digit_third + 1
-    pos_digit_1 = digit_third + 2
-    
-    if pos_digit_0 > 9:
-        pos_digit_0 -= 10
-    if pos_digit_1 > 9:
-        pos_digit_1 -= 10
-
-    if digit_fourth == pos_digit_0:
-        return True
-    elif digit_fourth == pos_digit_1:
-        return True
+def main() -> None:
+    if args.oem:
+        print(f"OEM key: {OEMKey.generate()}")
+    elif args.retail:
+        print(f"Retail key: {RetailKey.generate()}")
+    elif args.office:
+        print(f"Office 97 key: {OfficeKey.generate()}")
+    elif args.key:
+        if OEMKey.validate(args.key):
+            print("OEM key is valid")
+        elif RetailKey.validate(args.key):
+            print("Retail key is valid")
+        elif OfficeKey.validate(args.key):
+            print("Office 97 key is valid")
+        else:
+            print("Key is invalid")
     else:
-        return False
+        print(f"OEM key: {OEMKey.generate()}")
+        print(f"Retail key: {RetailKey.generate()}")
+        print(f"Office 97 key: {OfficeKey.generate()}")
 
-valid_key: bool
-key_type: str
 
-try: # If there's an argument
-    arg = sys.argv[1]
-except IndexError: # Otherwise
-    arg = False
+if __name__ == "__main__":
+    parser = ArgumentParser(description="win95-keygen - Windows 95 & Office 97 key generator and validator")
+    parser.add_argument(
+        "-o", "--oem",
+        action="store_true",
+        help="generate an OEM key"
+    )
+    parser.add_argument(
+        "-r", "--retail",
+        action="store_true",
+        help="generate a retail key"
+    )
+    parser.add_argument(
+        "-f", "--office",
+        action="store_true",
+        help="generate an Office 97 key"
+    )
+    parser.add_argument(
+        "key",
+        nargs="?",
+        help="key to validate"
+    )
+    args = parser.parse_args()
 
-if not arg:
-    print(f'OEM key: {generate_oem()}')
-    print(f'Retail key: {generate_retail()}')
-    print(f'Office 97 key: {generate_office()}')
-    exit()
-
-key_segs = arg.split('-')
-
-if 'OEM' in arg: # Assume argument is an OEM key
-    valid_key = validate_oem(arg)
-    key_type = 'OEM'
-elif len(key_segs[0]) == 4: # Office 97 key
-    valid_key = validate_office(arg)
-    key_type = 'Office 97'
-else: # Retail key
-    valid_key = validate_retail(arg)
-    key_type = 'retail'
-
-if valid_key: # If the key was valid
-    print(f'Valid {key_type} key')
-else: # Otherwise
-    print('Invalid key')
+    main()
