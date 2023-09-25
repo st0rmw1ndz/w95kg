@@ -30,3 +30,9 @@ Office 97 key: 2278-0499303
 py keygen.py 33899-OEM-0900903-88381
 OEM key is valid
 ```
+
+## Building
+
+Be sure [PyInstaller]() is installed. Then, run `build.py` in your terminal. If all goes well, it should be built.
+
+(Tested on Windows 10)
