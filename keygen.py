@@ -25,7 +25,7 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser(description="win95-keygen - Windows 95 & Office 97 key generator and validator")
+    parser = ArgumentParser(description="win95-keygen - Windows 95 & Office 97 key generator/validator")
     parser.add_argument(
         "-o", "--oem",
         action="store_true",

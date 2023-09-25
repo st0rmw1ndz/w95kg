@@ -1,27 +1,32 @@
-# win95-keygen-py
+# win95-keygen
 
-Windows 95 key generator and checker in Python
-
-Supports: OEM, retail, and Office 97 keys
+Windows 95 & Office 97 key generator/validator
 
 ## Usage
-No argument:
-```
-py keygen.py
 
-OEM key: 05601-OEM-0720793-80936
-Retail key: 185-0912225
-Office 97 key: 6779-0791031
-```
-Office 97 key:
-```
-py keygen.py 6779-0791031
+```commandline
+usage: keygen.py [-h] [-o] [-r] [-f] [key]
 
-Valid Office 97 key
-```
-Invalid key:
-```
-py keygen.py asdifashdfkasjdf
+win95-keygen - Windows 95 & Office 97 key generator/validator
 
-Invalid key
+positional arguments:
+  key           key to validate
+
+options:
+  -h, --help    show this help message and exit
+  -o, --oem     generate an OEM key
+  -r, --retail  generate a retail key
+  -f, --office  generate an Office 97 key
+```
+
+## Examples
+
+```commandline
+py keygen.py -f
+Office 97 key: 2278-0499303
+```
+
+```commandline
+py keygen.py 33899-OEM-0900903-88381
+OEM key is valid
 ```
