@@ -1,38 +1,41 @@
-# win95-keygen
+# w95kg
 
-Windows 95 & Office 97 key generator/validator
+Windows 95 and Office 97 key generator and validator.
 
 ## Usage
 
-```commandline
-usage: keygen.py [-h] [-o] [-r] [-f] [key]
+```
+Usage: w95kg [OPTIONS] COMMAND [ARGS]...
 
-win95-keygen - Windows 95 & Office 97 key generator/validator
+  Windows 95 and Office 97 key generator.
 
-positional arguments:
-  key           key to validate
+  Copyright (c) 2024 frosty.
 
-options:
-  -h, --help    show this help message and exit
-  -o, --oem     generate an OEM key
-  -r, --retail  generate a retail key
-  -f, --office  generate an Office 97 key
+Options:
+  --version   Show the version and exit.
+  -h, --help  Show this message and exit.
+
+Commands:
+  generate  Generate a key.
+  validate  Validate a key.
 ```
 
 ## Examples
 
-```commandline
-py keygen.py -f
-Office 97 key: 2278-0499303
+```
+w95kg generate all
+OEM key: 27202-OEM-0639055-14911
+Retail key: 803-0396253
+Office 97 key: 2180-0643107
 ```
 
-```commandline
-py keygen.py 33899-OEM-0900903-88381
+```
+w95kg validate 27202-OEM-0639055-14911
 OEM key is valid
 ```
 
-## Building
+## Installation
 
-Be sure [PyInstaller](https://pyinstaller.org/en/stable/installation.html) is installed. Then, run `build.py` in your terminal. If all goes well, it should be built.
-
-(Tested on Windows 10)
+```
+pip install git+https://github.com/st0rmw1ndz/w95kg.git
+```
